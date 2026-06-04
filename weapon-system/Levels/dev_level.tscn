@@ -1,0 +1,54 @@
+[gd_scene format=3 uid="uid://cg86ghgucb25e"]
+
+[ext_resource type="PackedScene" uid="uid://dbexlaq635v8y" path="res://Player/player.tscn" id="1_nfei8"]
+[ext_resource type="PackedScene" uid="uid://bsgxdepivb8el" path="res://Enemy/enemyTest.tscn" id="2_v4iat"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_nfei8"]
+frequency = 0.398
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_v4iat"]
+noise = SubResource("FastNoiseLite_nfei8")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_csoik"]
+albedo_color = Color(0.09239707, 0.09239706, 0.09239706, 1)
+albedo_texture = SubResource("NoiseTexture2D_v4iat")
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_b4ctq"]
+material = SubResource("StandardMaterial3D_csoik")
+size = Vector2(100, 100)
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_if7o0"]
+points = PackedVector3Array(-50, 0, -50, -50, 0, 50, 50, 0, -50, 50, 0, 50)
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_xfdtl"]
+
+[sub_resource type="Sky" id="Sky_ct43d"]
+sky_material = SubResource("ProceduralSkyMaterial_xfdtl")
+
+[sub_resource type="Environment" id="Environment_n5dxc"]
+background_mode = 2
+sky = SubResource("Sky_ct43d")
+
+[node name="DevLevel" type="Node3D" unique_id=351763472]
+
+[node name="Floor" type="MeshInstance3D" parent="." unique_id=564140926]
+mesh = SubResource("PlaneMesh_b4ctq")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Floor" unique_id=2139935725]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor/StaticBody3D" unique_id=643352945]
+shape = SubResource("ConvexPolygonShape3D_if7o0")
+
+[node name="Sun" type="DirectionalLight3D" parent="." unique_id=1371867891]
+transform = Transform3D(1, 0, 0, 0, 0.82997334, 0.55780303, 0, -0.55780303, 0.82997334, 0, 1.0594988, 0)
+shadow_enabled = true
+
+[node name="Sky" type="WorldEnvironment" parent="Sun" unique_id=156368839]
+environment = SubResource("Environment_n5dxc")
+
+[node name="Actors" type="Node3D" parent="." unique_id=1117921592]
+
+[node name="Player" parent="Actors" unique_id=309273132 instance=ExtResource("1_nfei8")]
+
+[node name="CharacterBody3D" parent="Actors" unique_id=1145865231 instance=ExtResource("2_v4iat")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3.3281775)
